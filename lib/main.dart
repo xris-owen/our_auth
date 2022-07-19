@@ -1,36 +1,54 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:our_auth/bloc_observer.dart';
+import 'package:our_auth/src/bloc/app_bloc.dart';
 import 'package:our_auth/src/config/route.dart';
+import 'package:our_auth/src/repositories/auth_repository.dart';
 
 Future<void> main() {
   return BlocOverrides.runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp();
-      runApp(const MyApp());
+      final authRepository = AuthRepository();
+      runApp(MyApp(authRepository: authRepository));
     },
     blocObserver: AppBlocObserver(),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final AuthRepository _authRepository;
+
+  const MyApp({Key? key, required AuthRepository authRepository})
+      : _authRepository = authRepository,
+        super(key: key);
   @override
   Widget build(BuildContext context) {
-    return AppView();
+    return RepositoryProvider.value(
+      value: _authRepository,
+      child: BlocProvider(
+        create: (_) => AppBloc(
+          authRepository: _authRepository,
+        ),
+        child: const AppView(),
+      ),
+    );
   }
 }
 
 class AppView extends StatelessWidget {
-  AppView({Key? key}) : super(key: key);
-  final AppRoute _appRoute = AppRoute();
+  const AppView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateRoute: _appRoute.onGeneratedRoute,
+      home: FlowBuilder(
+        state: context.select((AppBloc bloc) => bloc.state.userLoginStatus),
+        onGeneratePages: onGenerateAppViewPages,
+      ),
     );
   }
 }

@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:our_auth/src/bloc/app_bloc.dart';
 import 'package:our_auth/src/screens/auth/login_screen.dart';
-import 'package:our_auth/src/screens/auth/signup_screen.dart';
 import 'package:our_auth/src/screens/home_screen.dart';
 
-class AppRoute {
-  Route? onGeneratedRoute(RouteSettings routeSettings) {
-    switch (routeSettings.name) {
-      case '/':
-        return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-        );
-      case '/login':
-        return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
-      case '/sihnup':
-        return MaterialPageRoute(
-          builder: (_) => const SignupScreen(),
-        );
-      default:
-        return null;
-    }
+List<Page> onGenerateAppViewPages(
+    UserLoginStatus userLoginStatus, List<Page<dynamic>> pages) {
+  switch (userLoginStatus) {
+    case UserLoginStatus.authenticated:
+      return [const MaterialPage<void>(child: HomeScreen())];
+    case UserLoginStatus.unauthenticated:
+      return [const MaterialPage<void>(child: LoginScreen())];
   }
 }
