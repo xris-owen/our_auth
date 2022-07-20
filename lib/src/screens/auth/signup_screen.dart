@@ -29,9 +29,9 @@ class SignupForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        EmailInput(),
+        // EmailInput(),
         SizedBox(height: 8),
-        PasswordInput(),
+        // PasswordInput(),
         SizedBox(height: 8),
         SignupBtn(),
       ],
