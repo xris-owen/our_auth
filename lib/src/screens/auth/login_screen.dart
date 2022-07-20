@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:our_auth/src/cubit/cubit.dart';
 import 'package:our_auth/src/repositories/auth_repository.dart';
-import 'package:our_auth/src/screens/auth/auth_components/custom_button.dart';
 import 'package:our_auth/src/screens/auth/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -67,7 +66,7 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           onChanged: (password) {
-            context.read<LoginCubit>().emailChanged(password);
+            context.read<LoginCubit>().passwordChanged(password);
           },
           decoration: const InputDecoration(labelText: 'Password'),
         );
