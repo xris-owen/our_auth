@@ -29,7 +29,7 @@ class AuthRepository {
     } catch (_) {}
   }
 
-  Future<void> login({
+  Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
