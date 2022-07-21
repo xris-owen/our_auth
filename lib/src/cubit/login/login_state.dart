@@ -6,11 +6,13 @@ enum LoginStatus { initial, submitting, success, error }
 class LoginState extends Equatable {
   final String email;
   final String password;
+  final String errorMessage;
   final LoginStatus loginStatus;
 
   const LoginState({
     required this.email,
     required this.password,
+    required this.errorMessage,
     required this.loginStatus,
   });
 
@@ -18,6 +20,7 @@ class LoginState extends Equatable {
     return const LoginState(
       email: '',
       password: '',
+      errorMessage: '',
       loginStatus: LoginStatus.initial,
     );
   }
@@ -32,11 +35,13 @@ class LoginState extends Equatable {
   LoginState copyWith({
     String? email,
     String? password,
+    String? errorMessage,
     LoginStatus? loginStatus,
   }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
+      errorMessage: errorMessage ?? this.errorMessage,
       loginStatus: loginStatus ?? this.loginStatus,
     );
   }

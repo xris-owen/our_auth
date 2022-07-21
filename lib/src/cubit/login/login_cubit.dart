@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_auth/src/repositories/auth_repository.dart';
 
 part 'login_state.dart';
@@ -26,6 +27,16 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       );
       emit(state.copyWith(loginStatus: LoginStatus.success));
-    } catch (_) {}
+    } on FirebaseAuthException catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: e.message,
+          loginStatus: LoginStatus.error,
+        ),
+      );
+    } catch (ee) {
+      emit(state.copyWith(
+          errorMessage: ee.toString(), loginStatus: LoginStatus.error));
+    }
   }
 }

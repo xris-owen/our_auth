@@ -35,8 +35,19 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
+        print("-------${state.loginStatus}  ${state.errorMessage}");
         if (state.loginStatus == LoginStatus.error) {
-          // Handle the error
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.errorMessage ?? 'Authentication Failure',
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            );
         }
       },
       child: Column(
