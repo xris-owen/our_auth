@@ -38,7 +38,9 @@ class AuthRepository {
         email: email,
         password: password,
       );
-    } catch (_) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> logout() async {

@@ -21,6 +21,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
+
+    _userSubscription = _authRepository.user.listen(
+      (user) => add(AppUserChanged(user: user)),
+    );
   }
 
   void _onUserChanged(
@@ -37,5 +41,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) {
     unawaited(_authRepository.logout());
+  }
+
+  // Cancel any subscription on close
+  @override
+  Future<void> close() {
+    _userSubscription?.cancel();
+    return super.close();
   }
 }
